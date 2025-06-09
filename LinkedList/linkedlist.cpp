@@ -85,6 +85,16 @@ void deleteAtPosition(Node* &head, int pos){
     free(temp);
 }
 
+void deleteAtAleternate(Node* &head){
+    Node* currentNode = head;
+    while(currentNode != NULL && currentNode -> next != NULL){
+        Node * temp = currentNode -> next;
+        currentNode->next = currentNode -> next -> next;
+        free(temp);
+        currentNode = currentNode -> next;
+    }
+}
+
 void display(Node* head){
     Node*temp = head;
     while(temp != NULL){
@@ -117,7 +127,10 @@ int main(){
     insertAtHead(head,3);
     display(head);
 
-    deleteAtPosition(head,2);
+    // deleteAtPosition(head,2);
+    // display(head);
+
+    deleteAtAleternate(head);
     display(head);
     
     return 0;
