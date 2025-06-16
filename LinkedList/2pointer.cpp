@@ -222,24 +222,138 @@ void removeCycle(Node *&head){  // assuming that Linked List contains cycle
 
     slow -> next = NULL;
 }
+
+// Check if the linked list contains palindrome;
+
+bool isPalindrome(Node* &head){
+    Node * fast = head;
+    Node* slow = head;
+    Node* head1 = head;
+
+    while(fast != NULL && fast -> next != NULL){
+        slow = slow -> next;
+        fast = fast -> next -> next;
+    }
+    Node * prev = slow;
+    Node * current = slow -> next;
+    slow -> next = NULL;
+
+    while(current != NULL){
+        Node * next = current -> next;
+        current -> next = prev;
+        prev = current;
+        current = next;
+    }
+    Node * head2 = prev;
+    
+    while(head2 != NULL){
+        if(head2 -> val != head1 -> val){
+            return false;
+        }
+        head1 = head1 -> next;
+        head2 = head2 -> next;
+
+    }
+    return true;
+}
+
+// Rotate Linked List right by k
+
+Node * rotateByK(Node* &head,int k){
+    int length = 0;
+    Node * tail = head;
+
+    while(tail -> next != NULL){
+        tail = tail -> next;
+        length++;
+    }
+    length++;
+
+    k = k % length;
+    if(k == 0){
+        return head;
+    }
+
+    tail -> next = head;
+    Node *temp = head;
+    for(int i=1; i < length - k; i++){
+        temp = temp -> next;
+    }
+    Node *after_temp = temp -> next;
+    temp -> next = NULL;
+    return after_temp;
+}
+
+// group odd indices together followed by even indices of the linked list;
+
+Node * groupIndices(Node * &head){
+    if(head == NULL) return head;
+    Node * odd = head;
+    Node * evenHead = head -> next;
+    Node * even = evenHead;
+
+    while(even != NULL && even -> next != NULL){
+        odd -> next = odd -> next -> next;
+        even -> next = even -> next -> next;
+
+        odd = odd -> next;
+        even = even -> next;
+    }
+    odd -> next = evenHead;
+    return head;
+}
+
+// Pattern question
+
+Node * pattern(Node * &head){
+    Node * slow = middleOfLinkedlist(head);
+    Node * prev = slow;
+    Node * current = prev -> next;
+    slow -> next = NULL;
+
+    while(current != NULL){
+        Node * next = current -> next;
+        current -> next = prev;
+        prev = current;
+        current = next;
+    }
+    Node * head2 = prev;
+    Node * head1 = head;
+    Node * temp = head -> next;
+    while(head1 != head2){
+        head1 -> next = head2;
+        head1 = head2;
+        head2 = temp;
+        temp = head1 -> next;
+    }
+    return head;
+}
 int main(){
 
     ListNode l1;
+    l1.insertAtTail(1);
+    l1.insertAtTail(2);
     l1.insertAtTail(3);
+    l1.insertAtTail(4);
     l1.insertAtTail(5);
-    l1.insertAtTail(9);
-    l1.insertAtTail(11);
-    l1.insertAtTail(14);
-    l1.insertAtTail(15);
-    l1.insertAtTail(16);
     l1.display();
     cout << endl;
+
+    //cout << boolalpha << isPalindrome(l1.head);
     
-    l1.head -> next -> next -> next -> next -> next -> next -> next = l1.head -> next -> next;
-    cout << detectCycle(l1.head)<< endl;
-    removeCycle(l1.head);
-    cout << detectCycle(l1.head)<< endl;
+    
+    l1.head = pattern(l1.head);
     l1.display();
+    cout << endl;
+
+    // l1.head = rotateByK(l1.head,7);
+    // l1.display();
+    
+    // l1.head -> next -> next -> next -> next -> next -> next -> next = l1.head -> next -> next;
+    // cout << detectCycle(l1.head)<< endl;
+    // removeCycle(l1.head);
+    // cout << detectCycle(l1.head)<< endl;
+    // l1.display();
 
 
     // ListNode l2;
