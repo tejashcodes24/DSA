@@ -46,7 +46,7 @@ vector<int> prevGreaterElement(vector<int> &arr){
     reverse(arr.begin(),arr.end());
     st.push(0);
 
-    for(int i=0; i < arr.size();i++){
+    for(int i=1; i < arr.size();i++){
         while(!st.empty() && arr[st.top()] < arr[i]){
             output[st.top()] = n - i - 1;   // because after reverse indexes will change
             st.pop();
